@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎬 Crew Clips</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0d0f;
+      --surface: #18181c;
+      --border: #2a2a30;
+      --accent: #ff3c3c;
+      --accent2: #ff9500;
+      --text: #f0f0f0;
+      --muted: #888;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      padding: 2rem 2rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+    }
+    header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header span { color: var(--muted); font-size: 0.9rem; }
+
+    /* ADD FORM */
+    .add-section {
+      margin: 2rem auto;
+      max-width: 700px;
+      padding: 0 1.5rem;
+    }
+    .add-section h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    form.add-form {
+      display: grid;
+      gap: 0.75rem;
+    }
+    form.add-form input, form.add-form textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      width: 100%;
+      transition: border-color 0.2s;
+    }
+    form.add-form input:focus, form.add-form textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    form.add-form textarea { resize: vertical; min-height: 70px; }
+    form.add-form button {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.8rem 1.5rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    form.add-form button:hover { opacity: 0.9; transform: scale(1.02); }
+
+    /* VIDEO GRID */
+    .grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s;
+      animation: fadeIn 0.4s ease;
+    }
+    .card:hover { border-color: #444; transform: translateY(-3px); }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
+
+    .embed-wrap {
+      position: relative;
+      padding-top: 56.25%;
+      background: #111;
+    }
+    .embed-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    .no-embed {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    .no-embed a {
+      color: var(--accent2);
+      text-decoration: none;
+      word-break: break-all;
+      padding: 0 1rem;
+      text-align: center;
+    }
+    .no-embed .icon { font-size: 2rem; }
+
+    .card-body {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex: 1;
+    }
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--accent2);
+    }
+    .card-date { font-size: 0.75rem; color: var(--muted); }
+    .card-comment { font-size: 0.88rem; color: #ccc; line-height: 1.5; }
+
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: auto;
+      padding-top: 0.75rem;
+    }
+    .btn-like {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.15s, border-color 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .btn-like:hover { background: #2a2a30; border-color: #555; }
+    .btn-like.liked { border-color: var(--accent); color: var(--accent); }
+
+    form.delete-form { margin-left: auto; }
+    .btn-delete {
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      color: var(--muted);
+      padding: 0.4rem 0.7rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .btn-delete:hover { color: var(--accent); border-color: var(--accent); }
+
+    .empty {
+      grid-column: 1/-1;
+      text-align: center;
+      color: var(--muted);
+      padding: 4rem 0;
+      font-size: 1.1rem;
+    }
+
+    .section-title {
+      max-width: 1200px;
+      margin: 2rem auto 1rem;
+      padding: 0 1.5rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🎬 Crew Clips</h1>
+  <span>Teilt eure Lieblingsvideos</span>
+</header>
+
+<div class="add-section">
+  <h2>+ Video hinzufügen</h2>
+  <form class="add-form" method="POST" action="/add">
+    <input type="text" name="name" placeholder="Dein Name" required maxlength="50">
+    <input type="url" name="url" placeholder="YouTube- oder Vimeo-Link" required>
+    <textarea name="comment" placeholder="Kurzer Kommentar (optional)" maxlength="300"></textarea>
+    <button type="submit">Teilen 🚀</button>
+  </form>
+</div>
+
+<div class="section-title">Alle Videos ({{ videos|length }})</div>
+
+<div class="grid">
+  {% if not videos %}
+    <div class="empty">Noch keine Videos — seid die Ersten! 🎉</div>
+  {% endif %}
+
+  {% for v in videos %}
+  <div class="card">
+    <div class="embed-wrap">
+      {% if v.embed %}
+        <iframe src="{{ v.embed }}" allowfullscreen></iframe>
+      {% else %}
+        <div class="no-embed">
+          <span class="icon">🔗</span>
+          <a href="{{ v.url }}" target="_blank" rel="noopener">{{ v.url }}</a>
+          <small>(kein Embed möglich)</small>
+        </div>
+      {% endif %}
+    </div>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="card-name">{{ v.name }}</span>
+        <span class="card-date">{{ v.date[:10] }}</span>
+      </div>
+      {% if v.comment %}
+        <p class="card-comment">{{ v.comment }}</p>
+      {% endif %}
+      <div class="card-actions">
+        <button class="btn-like" onclick="like({{ v.id }}, this)">
+          ❤️ <span class="count">{{ v.likes }}</span>
+        </button>
+        <form class="delete-form" method="POST" action="/delete/{{ v.id }}"
+              onsubmit="return confirm('Video löschen?')">
+          <button class="btn-delete" type="submit">🗑</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+async function like(id, btn) {
+  const res = await fetch(`/like/${id}`, { method: "POST" });
+  if (res.ok) {
+    btn.classList.add("liked");
+    const span = btn.querySelector(".count");
+    span.textContent = parseInt(span.textContent) + 1;
+  }
+}
+</script>
+</body>
+</html>
